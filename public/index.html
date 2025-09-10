@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Otto's Site</title>
+
+  <!-- Google Fonts: Bebas Neue -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      background: url("asset/brickwall.jpg") no-repeat center center;
+      background-size: cover;
+      font-family: 'Bebas Neue', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tape {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      z-index: 1;
+    }
+
+    .textbox {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: yellow;
+      color: black;
+      padding: 20px 40px;
+      border: 4px solid black;
+      border-radius: 8px;
+      z-index: 2;
+      text-align: center;
+      font-size: 2rem;
+      line-height: 1.4;
+    }
+
+    .textbox .red {
+      color: red;
+    }
+
+    .sayso, .monkey {
+      position: absolute;
+      bottom: -50px;
+      width: 600px;
+      z-index: 2;
+    }
+
+    .sayso {
+      left: -200px;
+    }
+
+    .monkey {
+      right: -200px;
+    }
+
+    .scrolling-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      font-size: 1.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .scrolling-text span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 12s linear infinite paused;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .mute-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 4;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgMusic" loop>
+    <source src="asset/Irot.mp3" type="audio/mpeg">
+  </audio>
+
+  <img src="asset/tape.png" alt="tape" class="tape">
+
+  <div class="textbox">
+    <p>The way the site originally functioned is now <span class="red">BROKEN</span></p>
+    <p>This will take a long time to fix and there is no estimate as to when it will be back.</p>
+    <p>I am working on a fix but it will definitely be a while, keep checking this page, it will change when the site is back up.</p>
+  </div>
+
+  <img src="asset/sayso.png" alt="sayso" class="sayso">
+  <img src="asset/monkey.png" alt="monkey" class="monkey">
+
+  <div class="scrolling-text">
+    <span id="scrollText">🎵 - I Rot, I Rot - Che </span>
+  </div>
+
+  <button class="mute-btn" id="muteBtn">🔇</button>
+
+  <script>
+    const audio = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+    const scrollText = document.getElementById('scrollText');
+    let started = false;
+
+    function updateScroll() {
+      scrollText.style.animationPlayState = audio.muted || !started ? 'paused' : 'running';
+    }
+
+    muteBtn.addEventListener('click', () => {
+      if (!started) {
+        audio.play().catch(() => console.log('Autoplay blocked.'));
+        started = true;
+        audio.muted = false;
+        muteBtn.textContent = '🔊';
+      } else {
+        audio.muted = !audio.muted;
+        muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+      }
+      updateScroll();
+    });
+
+    audio.addEventListener('volumechange', updateScroll);
+  </script>
+</body>
+</html>
+
